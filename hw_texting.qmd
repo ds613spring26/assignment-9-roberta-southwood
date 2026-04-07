@@ -1,5 +1,6 @@
 ---
 title: "Homework Assignment: Sentiment Analysis of Emma"
+author: "Roberta Southwood"
 format: html
 editor: visual
 ---
