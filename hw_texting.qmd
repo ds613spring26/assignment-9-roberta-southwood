@@ -44,6 +44,7 @@ library(textdata)
 library(tidytext)
 library(stringr)
 library(janeaustenr)
+library(wordcloud)
 ```
 
 ```{r}
@@ -91,6 +92,58 @@ nrow(tidy_austen)
         -   Count word frequency.
         -   Filter for frequently occurring words (`n > 50`).
         -   Visualize using a **bar chart** (`ggplot2`) and a **word cloud** (`wordcloud`).
+
+```{r}
+
+# Filter to only the book Emma
+Emma <- tidy_austen |>
+  filter(book == "Emma")
+
+```
+
+**Joy**
+
+```{r}
+
+# get nrc lexicon 
+nrc_lexicon <- get_sentiments("nrc")
+
+# join with Emma 
+emma_nrc_joined <- Emma |>
+  inner_join(nrc_lexicon)
+
+# filter for nrc joy 
+emma_joy_nrc <- emma_nrc_joined |>
+  filter(sentiment == "joy")
+
+# count word frequency 
+count(emma_joy_nrc) # 4232
+```
+
+```{r}
+# filter by words that appear more than 60 times and create bat chart 
+emma_joy_nrc |>
+  count(word, sort =TRUE) |>
+  filter(n > 60) |>
+  mutate(word = reorder(word, n)) |>
+  ggplot(aes(n, word)) +
+  geom_col(fill = "purple", color = "black") +
+  labs(y = NULL, title = "Top Joy Words in Emma by Jane Austen")
+
+```
+
+```{r}
+
+emma_joy_nrc_over_60 <- emma_joy_nrc |>
+  count(word, sort =TRUE) |>
+  filter(n > 60) 
+
+wordcloud(words = emma_joy_nrc_over_60$word, 
+       freq = emma_joy_nrc_over_60$n, 
+       max.words = 20)
+
+
+```
 
 4.  **Push to GitHub**
 
