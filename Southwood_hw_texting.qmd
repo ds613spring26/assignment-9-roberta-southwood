@@ -126,11 +126,18 @@ emma_nrc_joined <- Emma |>
 emma_joy_nrc <- emma_nrc_joined |>
   filter(sentiment == "joy")
 
-# count word frequency 
+# count total word frequency 
 count(emma_joy_nrc) # 3691
+
+# count individual word frequency 
+emma_joy_nrc |>
+  count(word, sort =TRUE) |>
+  mutate(word = reorder(word, n))|>
+  head(10)
 ```
 
 ```{r}
+
 # filter by words that appear more than 50 times and create bar chart 
 emma_joy_nrc |>
   count(word, sort =TRUE) |>
@@ -173,8 +180,14 @@ emma_affin <-  Emma |>
 emma_positive_affin <- emma_affin |>
   filter(value >= 1 )
 
-# count word frequency 
+# count total word frequency 
 count(emma_positive_affin) # 4518
+
+# count individual word frequency 
+emma_positive_affin |>
+  count(word, sort =TRUE) |>
+  mutate(word = reorder(word, n))|>
+  head(10)
 ```
 
 ```{r}
@@ -218,8 +231,14 @@ emma_bing <-  Emma |>
 emma_positive_bing <- emma_bing |>
   filter(sentiment == "positive")
 
-# count word frequency 
+# count total word frequency 
 count(emma_positive_bing) # 5150
+
+# count individual word frequency 
+emma_positive_bing |>
+  count(word, sort =TRUE) |>
+  mutate(word = reorder(word, n))|>
+  head(10)
 ```
 
 ```{r}
