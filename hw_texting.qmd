@@ -131,10 +131,10 @@ count(emma_joy_nrc) # 3691
 ```
 
 ```{r}
-# filter by words that appear more than 60 times and create bat chart 
+# filter by words that appear more than 50 times and create bar chart 
 emma_joy_nrc |>
   count(word, sort =TRUE) |>
-  filter(n > 60) |>
+  filter(n > 50) |>
   mutate(word = reorder(word, n)) |>
   ggplot(aes(n, word)) +
   geom_col(fill = "purple", color = "black") +
@@ -144,14 +144,14 @@ emma_joy_nrc |>
 
 ```{r}
 
-# filter to words that appear over 60 times 
-emma_joy_nrc_over_60 <- emma_joy_nrc |>
+# filter to words that appear over 50 times 
+emma_joy_nrc_over_50 <- emma_joy_nrc |>
   count(word, sort =TRUE) |>
-  filter(n > 60) 
+  filter(n > 50) 
 
-# create a word cloud for the words that appear over 60 times 
-wordcloud(words = emma_joy_nrc_over_60$word, 
-       freq = emma_joy_nrc_over_60$n, 
+# create a word cloud for the words that appear over 50 times 
+wordcloud(words = emma_joy_nrc_over_50$word, 
+       freq = emma_joy_nrc_over_50$n, 
        scale=c(3, 0.5),
        max.words = 20)
 
@@ -179,27 +179,27 @@ count(emma_positive_affin) # 4518
 
 ```{r}
 
-# filter by words that appear more than 60 times and create bat chart 
+# filter by words that appear more than 50 times and create bar chart 
 emma_positive_affin |>
   count(word, sort =TRUE) |>
-  filter(n > 60) |>
+  filter(n > 50) |>
   mutate(word = reorder(word, n)) |>
   ggplot(aes(n, word)) +
-  geom_col(fill = "darkgreen", color = "black") +
+  geom_col(fill = "green", color = "black") +
   labs(y = NULL, title = "Top Positive Words in Emma (affin >=1)")
 
 ```
 
 ```{r}
 
-# filter to words that appear over 60 times 
-emma_positive_affin_over_60 <- emma_positive_affin |>
+# filter to words that appear over 50 times 
+emma_positive_affin_over_50 <- emma_positive_affin |>
   count(word, sort =TRUE) |>
-  filter(n > 60) 
+  filter(n > 50) 
 
-# create a word cloud for the words that appear over 60 times 
-wordcloud(words = emma_positive_affin_over_60$word, 
-       freq = emma_positive_affin_over_60$n, 
+# create a word cloud for the words that appear over 50 times 
+wordcloud(words = emma_positive_affin_over_50$word, 
+       freq = emma_positive_affin_over_50$n, 
        max.words = 20)
 ```
 
@@ -224,14 +224,30 @@ count(emma_positive_bing) # 5150
 
 ```{r}
 
-# filter by words that appear more than 60 times and create bat chart 
- |>
+# filter by words that appear more than 50 times and create bar chart 
+emma_positive_bing |>
   count(word, sort =TRUE) |>
-  filter(n > 60) |>
+  filter(n > 50) |>
   mutate(word = reorder(word, n)) |>
   ggplot(aes(n, word)) +
-  geom_col(fill = "darkgreen", color = "black") +
-  labs(y = NULL, title = "Top Positive Words in Emma (affin >=1)")
+  geom_col(fill = "orange", color = "black") +
+  labs(y = NULL, title = "Top Positive Words in Emma (bing)")
+
+```
+
+```{r}
+
+# filter to words that appear over 50 times 
+emma_positive_bing_over_50 <- emma_positive_bing |>
+  count(word, sort =TRUE) |>
+  filter(n > 50) 
+
+# create a word cloud for the words that appear over 50 times 
+wordcloud(words = emma_positive_bing_over_50$word, 
+       freq = emma_positive_bing_over_50$n, 
+       scale=c(3, 0.5),
+       max.words = 20)
+
 
 ```
 
