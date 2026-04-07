@@ -76,7 +76,17 @@ head(Austen)
 tidy_austen <- Austen |>
   unnest_tokens(word, text)
 
-nrow(tidy_austen) 
+nrow(tidy_austen) #725055
+```
+
+```{r}
+
+# remove stop words, to ensure they do not impact analysis later 
+
+tidy_austen <- tidy_austen |>
+  anti_join(stop_words)
+
+nrow(tidy_austen) # 217609
 ```
 
 3.  **Sentiment Analysis**
@@ -101,7 +111,7 @@ Emma <- tidy_austen |>
 
 ```
 
-**Joy**
+**Joy sentiment** `nrc` (joy)
 
 ```{r}
 
@@ -117,7 +127,7 @@ emma_joy_nrc <- emma_nrc_joined |>
   filter(sentiment == "joy")
 
 # count word frequency 
-count(emma_joy_nrc) # 4232
+count(emma_joy_nrc) # 3691
 ```
 
 ```{r}
@@ -128,20 +138,100 @@ emma_joy_nrc |>
   mutate(word = reorder(word, n)) |>
   ggplot(aes(n, word)) +
   geom_col(fill = "purple", color = "black") +
-  labs(y = NULL, title = "Top Joy Words in Emma by Jane Austen")
+  labs(y = NULL, title = "Top Joy Sentiment Words in Emma (nrc)")
 
 ```
 
 ```{r}
 
+# filter to words that appear over 60 times 
 emma_joy_nrc_over_60 <- emma_joy_nrc |>
   count(word, sort =TRUE) |>
   filter(n > 60) 
 
+# create a word cloud for the words that appear over 60 times 
 wordcloud(words = emma_joy_nrc_over_60$word, 
        freq = emma_joy_nrc_over_60$n, 
+       scale=c(3, 0.5),
        max.words = 20)
 
+
+```
+
+**Positive score** `afinn` (positive scores ≥ 1)
+
+```{r}
+
+# get affin lexicon 
+afinn_lexicon <- get_sentiments("afinn")
+
+# join affin with emma 
+emma_affin <-  Emma |>
+  inner_join(afinn_lexicon)
+
+# filter for positive scores >= 1
+emma_positive_affin <- emma_affin |>
+  filter(value >= 1 )
+
+# count word frequency 
+count(emma_positive_affin) # 4518
+```
+
+```{r}
+
+# filter by words that appear more than 60 times and create bat chart 
+emma_positive_affin |>
+  count(word, sort =TRUE) |>
+  filter(n > 60) |>
+  mutate(word = reorder(word, n)) |>
+  ggplot(aes(n, word)) +
+  geom_col(fill = "darkgreen", color = "black") +
+  labs(y = NULL, title = "Top Positive Words in Emma (affin >=1)")
+
+```
+
+```{r}
+
+# filter to words that appear over 60 times 
+emma_positive_affin_over_60 <- emma_positive_affin |>
+  count(word, sort =TRUE) |>
+  filter(n > 60) 
+
+# create a word cloud for the words that appear over 60 times 
+wordcloud(words = emma_positive_affin_over_60$word, 
+       freq = emma_positive_affin_over_60$n, 
+       max.words = 20)
+```
+
+**Positive Sentiment** `bing` (positive)
+
+```{r}
+
+# get bing lexicon 
+bing_lexicon <- get_sentiments("bing")
+
+# join with emma  
+emma_bing <-  Emma |>
+  inner_join(bing_lexicon)
+
+# filter for positive sentiment  
+emma_positive_bing <- emma_bing |>
+  filter(sentiment == "positive")
+
+# count word frequency 
+count(emma_positive_bing) # 5150
+```
+
+```{r}
+
+# filter by words that appear more than 60 times and create bat chart 
+ |>
+  count(word, sort =TRUE) |>
+  filter(n > 60) |>
+  mutate(word = reorder(word, n)) |>
+  ggplot(aes(n, word)) +
+  geom_col(fill = "darkgreen", color = "black") +
+  labs(y = NULL, title = "Top Positive Words in Emma (affin >=1)")
 
 ```
 
