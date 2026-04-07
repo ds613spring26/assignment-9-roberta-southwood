@@ -35,6 +35,37 @@ Use the **`tidytext`** package and three different **sentiment lexicons** (`nrc`
     -   Group by book and detect chapter boundaries using regex.
     -   Create `linenumber` and `chapter` columns.
 
+```{r}
+
+# load libraries 
+library(tidyverse)
+library(dplyr)
+library(textdata)
+library(tidytext)
+library(stringr)
+library(janeaustenr)
+```
+
+```{r}
+
+# Load the austen_books() dataset from the janeaustenr package
+austen_books() |>
+  distinct(book)
+
+# Group by book and detect chapter boundaries using regex.
+# Create linenumber and chapter columns. 
+Austen <- austen_books() |>
+  group_by(book) |>
+  mutate(linenumber = row_number(),
+         chapter = cumsum(str_detect(text, regex("^chapter [\\divxlc]",
+                                                 ignore_case = TRUE)))) |>
+  ungroup()
+
+# View results 
+head(Austen)
+  
+```
+
 2.  **Tokenization**
 
     -   Use `unnest_tokens()` to tokenize text into individual words.
