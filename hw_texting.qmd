@@ -70,6 +70,14 @@ head(Austen)
 
     -   Use `unnest_tokens()` to tokenize text into individual words.
 
+```{r}
+# tokenization using unnest_tokens()
+tidy_austen <- Austen |>
+  unnest_tokens(word, text)
+
+nrow(tidy_austen) 
+```
+
 3.  **Sentiment Analysis**
 
     -   Filter joy/positive words from **each** of the three sentiment lexicons:
